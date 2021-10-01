@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "NewWorldExplorerCLI": {
+      "commandName": "Project",
+      "commandLineArgs": "\"D:\\Work\\Coding\\NewWorldExplorer\\NewWorldExplorerCLI\\bin\\Debug\\netcoreapp3.1\" \"C:\\Users\\user3\\Desktop\\NewWorld\\assets\""
+    }
+  }
+}
