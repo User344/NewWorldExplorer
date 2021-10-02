@@ -25,9 +25,9 @@ namespace NewWorldExplorer.NewWorld
             _zip.Dispose();
         }
 
-        public static Task<Pak> Load(string path)
+        public static async Task<Pak> Load(string path)
         {
-            var zip = ZipFile.OpenRead(path);
+            var zip = await Task.Run(() => ZipFile.OpenRead(path));
             var files = new List<PakFile>();
 
             foreach (var entry in zip.Entries)
@@ -36,8 +36,7 @@ namespace NewWorldExplorer.NewWorld
                 files.Add(file);
             }
 
-            var pak = new Pak(zip, Path.GetFileName(path), files);
-            return Task.FromResult(pak);
+            return new Pak(zip, Path.GetFileName(path), files);
         }
     }
 }

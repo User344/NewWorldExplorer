@@ -22,7 +22,7 @@ namespace NewWorldExplorer.NewWorld
             _entry = entry;
         }
 
-        public Task<byte[]> Export()
+        public async Task<byte[]> Export()
         {
             var buffer = new byte[_entry.Length];
 
@@ -33,7 +33,7 @@ namespace NewWorldExplorer.NewWorld
             {
                 // No compression
 
-                _entry.Open().Read(buffer, 0, (int)_entry.Length);
+                await _entry.Open().ReadAsync(buffer, 0, (int)_entry.Length);
             }
             else if (compressionMethod == 15)
             {
@@ -44,20 +44,20 @@ namespace NewWorldExplorer.NewWorld
                 compressionField.SetValue(_entry, Enum.ToObject(compressionField.FieldType, 0));
 
                 var compressed = new byte[_entry.CompressedLength];
-                _entry.Open().Read(compressed, 0, compressed.Length);
+                await _entry.Open().ReadAsync(compressed, 0, compressed.Length);
 
-                var result = oodle.DecompressBuffer(
+                var result = await Task.Run(() => oodle.DecompressBuffer(
                     compressed, compressed.Length, buffer, buffer.Length,
                     OodleLZ_FuzzSafe.No, OodleLZ_CheckCRC.No, OodleLZ_Verbosity.None,
                     0L, 0L, 0L, 0L, 0L, 0L, OodleLZ_Decode_ThreadPhase.Unthreaded
-                );
+                ));
             }
             else
             {
                 throw new NotImplementedException();
             }
 
-            return Task.FromResult(buffer);
+            return buffer;
         }
 
         public async Task Save(string path)
