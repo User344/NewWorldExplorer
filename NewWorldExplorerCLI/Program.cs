@@ -7,18 +7,15 @@ namespace NewWorldExplorerCLI
 {
     public class Program
     {
-        public static void Main(string[] args)
-            => MainAsync(args).GetAwaiter().GetResult();
-
-        public static async Task MainAsync(string[] args)
+        public static async Task Main(string[] args)
         {
-            if (args.Length < 2)
+            if (args.Length < 1)
             {
-                Console.WriteLine($"Usage: {args[0]} <game dir>");
+                Console.WriteLine($"Usage: NewWorldExplorerCLI.exe <game dir>");
                 return;
             }
 
-            var dir = args[1];
+            var dir = args[0];
             if (!Directory.Exists(dir))
             {
                 Console.WriteLine("Game directory doesn't exist!");
